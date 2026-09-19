@@ -452,7 +452,7 @@ CRITICAL SECURITY RULE:
                     sendApiKey = sessionData?.session_api_key || null;
                   }
 
-                  const sendNotif = await fetch(`${supabaseUrl}/functions/v1/send-whatsapp`, {
+                  const sendNotif = await fetch(`${supabaseUrl}/functions/v1/send-whatsapp-happypetal`, {
                     method: "POST",
                     headers: {
                       Authorization: `Bearer ${supabaseServiceKey}`,
