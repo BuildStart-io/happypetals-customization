@@ -49,6 +49,7 @@ export default function Settings() {
   const [welcomeMessage, setWelcomeMessage] = useState("");
   const [welcomeMediaUrl, setWelcomeMediaUrl] = useState("");
   const [welcomeMediaUrls, setWelcomeMediaUrls] = useState<string[]>([]);
+  const [freshFlowersPdfs, setFreshFlowersPdfs] = useState<string[]>([]);
   const [bypassTriggers, setBypassTriggers] = useState<string[]>([]);
   const [newBypassTrigger, setNewBypassTrigger] = useState("");
   // Welcome sequence: ordered list of items to send
@@ -129,6 +130,10 @@ export default function Settings() {
 
       data?.forEach((setting) => {
         switch (setting.key) {
+          case "fresh_flowers_pdfs": {
+            setFreshFlowersPdfs(Array.isArray(setting.value?.urls) ? setting.value.urls : []);
+            break;
+          }
           case "welcome_message": {
             const wVal = setting.value as any;
             setWelcomeMessage(wVal?.text || "");
@@ -546,6 +551,23 @@ export default function Settings() {
       account_number: bankAccounts[0]?.account_number || "",
       account_name: bankAccounts[0]?.account_name || "",
     });
+  };
+
+  const handleSaveFreshFlowers = async () => {
+    setSaving(true);
+    try {
+      const { error } = await supabase.from("settings").upsert({
+        key: "fresh_flowers_pdfs",
+        value: { urls: freshFlowersPdfs },
+        user_id: user!.id,
+      });
+      if (error) throw error;
+      toast({ title: "Saved", description: "Fresh flowers PDFs saved." });
+    } catch (e: any) {
+      toast({ title: "Error", description: e.message, variant: "destructive" });
+    } finally {
+      setSaving(false);
+    }
   };
 
   const handleSaveAutoResponses = () => {
@@ -1105,6 +1127,36 @@ export default function Settings() {
             </Card>
 
             {/* Auto Responses */}
+            <Card>
+              <CardHeader>
+                <CardTitle>Fresh Flowers Catalog (Happy Petals)</CardTitle>
+                <CardDescription>
+                  Upload exactly 3 PDFs here for the Fresh Flowers budget ranges.
+                </CardDescription>
+              </CardHeader>
+              <CardContent>
+                <p className="text-sm text-muted-foreground mb-4">
+                  The AI will automatically send these to customers based on their selection. 
+                  Upload order matters: 1st (1500-4000), 2nd (4000-6000), 3rd (6000 and above).
+                </p>
+                <WelcomeMediaUpload
+                  label="Fresh Flowers PDFs"
+                  description="Upload up to 3 PDFs."
+                  mediaUrls={freshFlowersPdfs}
+                  onChange={setFreshFlowersPdfs}
+                  maxFiles={3}
+                />
+                <Button onClick={handleSaveFreshFlowers} disabled={saving} className="mt-6">
+                  {saving ? (
+                    <Loader2 className="mr-2 h-4 w-4 animate-spin" />
+                  ) : (
+                    <Save className="mr-2 h-4 w-4" />
+                  )}
+                  Save Catalog
+                </Button>
+              </CardContent>
+            </Card>
+
             <Card>
               <CardHeader>
                 <CardTitle>Auto Responses</CardTitle>

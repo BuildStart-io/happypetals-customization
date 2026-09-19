@@ -7,12 +7,14 @@ import { useToast } from "@/hooks/use-toast";
 import { ImagePlus, X, Loader2, FileText } from "lucide-react";
 
 interface WelcomeMediaUploadProps {
+  label?: string;
+  description?: string;
   mediaUrls: string[];
   onChange: (urls: string[]) => void;
   maxFiles?: number;
 }
 
-export default function WelcomeMediaUpload({ mediaUrls, onChange, maxFiles = 5 }: WelcomeMediaUploadProps) {
+export default function WelcomeMediaUpload({ mediaUrls, onChange, maxFiles = 5, label, description }: WelcomeMediaUploadProps) {
   const { user } = useAuth();
   const { toast } = useToast();
   const [uploading, setUploading] = useState(false);
@@ -66,13 +68,13 @@ export default function WelcomeMediaUpload({ mediaUrls, onChange, maxFiles = 5 }
   return (
     <div className="space-y-2">
       <div className="flex items-center justify-between">
-        <Label>Welcome Media</Label>
+        <Label>{label || "Welcome Media"}</Label>
         <span className="text-xs text-muted-foreground">
           {mediaUrls.length}/{maxFiles}
         </span>
       </div>
       <p className="text-xs text-muted-foreground">
-        Upload images, videos, voice files, or PDFs to send with the welcome message when a new customer contacts you
+        {description || "Upload images, videos, voice files, or PDFs to send with the welcome message when a new customer contacts you"}
       </p>
       <p className="text-xs text-muted-foreground">
         Supported: JPG, PNG, WebP, MP4, MP3, WAV, OGG, M4A, PDF
