@@ -4,3 +4,7 @@ dist/
 .DS_Store
 *.log
 .gemini/
+
+# Scratch scripts
+patch*.js
+*.sql
