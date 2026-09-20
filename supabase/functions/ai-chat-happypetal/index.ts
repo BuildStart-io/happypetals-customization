@@ -27,7 +27,7 @@ serve(async (req) => {
 
     const supabaseUrl = Deno.env.get("SUPABASE_URL")!;
     const supabaseServiceKey = Deno.env.get("SUPABASE_SERVICE_ROLE_KEY")!;
-    const supabase = createClient(supabaseUrl, supabaseServiceKey);
+    const supabase = createClient(supabaseUrl, supabaseServiceKey, { db: { schema: "happypetal_customization" } });
 
     const { message, phoneNumber, conversationHistory, userId, sessionApiKey, senderName } = await req.json();
 
@@ -282,18 +282,7 @@ ${(() => {
     ${freshFlowersPdfs[0] ? `- 1500 - 4000 Range: ${freshFlowersPdfs[0]}` : ""}
     ${freshFlowersPdfs[1] ? `- 4000 - 6000 Range: ${freshFlowersPdfs[1]}` : ""}
     ${freshFlowersPdfs[2] ? `- 6000 and above Range: ${freshFlowersPdfs[2]}` : ""}
-    AND ALSO append EXACTLY this delivery/flower note right after the PDF link:
-    "1500 to 10,000/= fresh flowers photos / prices (pdf) 👆
 
-    🌸 *Note on our Chrysanthemums:* 🌸
-    Please note that since we work with fresh, natural flowers, occasionally the natural tone or the shape of the petals of Chrysanthemums may vary slightly from one farm to another. If you pick a Purple bouquet, we will always use Purple Chrysanthemums, but the natural look might be slightly different from the photo sometimes. We always ensure to provide the freshest blooms for your bouquet! 💐🌸
-
-    🚚🛺🛵 *Delivery details* 
-    📍 🌹🍰 Fresh Flowers & Cakes can be delivered only within Colombo district and selected areas of Gampaha district.
-    *Fresh flowers සහ cake කොළඹ දිස්ත්‍රික්කයේ සහ ගම්පහ දිස්ත්‍රික්කයේ තෝරාගත් ප්‍රදේශ වලට පමණක් ඩිලිවරි කරනු ලැබේ*
-
-    📍🍫👀💐🥡 ISLAND WIDE delivery available for Teddies, graduation teddies, artificial flowers & chocolates.
-    *Teddies, artificial flower bouquets, chocolate සඳහා දිවයින පුරා බෙදාහැරීමේ පහසුකම ඇත*"
 
 - STRICT DATA BOUNDARY: You must ONLY use the product catalog, FAQs, and payment information provided below. Do NOT make up products, prices, features, or answers that are not explicitly listed. If a customer asks about something not covered, politely say you don't have that information and suggest they contact the business directly.
 
