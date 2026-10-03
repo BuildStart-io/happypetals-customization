@@ -7,3 +7,4 @@ dist/
 
 # Scratch scripts
 patch*.js
+*.exp
